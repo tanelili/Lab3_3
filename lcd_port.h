@@ -18,6 +18,7 @@
 
 void digitalWrite(uint8_t pin, uint8_t val);
 void pinMode(uint8_t pin, uint8_t mode);
+void Sleep(int ms);
 void delayMicroseconds(int us);
 
 

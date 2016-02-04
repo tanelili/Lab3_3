@@ -1,7 +1,5 @@
 #include "LiquidCrystal.h"
-
 #include <stdio.h>
-
 #include <inttypes.h>
 // #include "Arduino.h"
 #include "board.h"
@@ -9,11 +7,6 @@
 #include <string.h>
 #include "lcd_port.h"
 #include <iostream>
-
-#define TICKRATE_HZ1 (1000) // Ticks per second
-
-
-
 
 // When the display powers up, it is configured as follows:
 //
@@ -274,11 +267,11 @@ inline size_t LiquidCrystal::write(uint8_t value) {
 }
 
 void LiquidCrystal::print(string& s) {
-	for (string::size_type i = 0; i < s.size(); i++){
-		setCursor(i,0);
+	for (string::size_type i = 0; i < s.size(); i++){ //ei set cursoria
 		write(s[i]);
 	}
 }
+// lisää tähän vielä se toinen!!!!
 
 /************ low level data pushing commands **********/
 

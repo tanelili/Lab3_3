@@ -266,11 +266,17 @@ inline size_t LiquidCrystal::write(uint8_t value) {
   return 1; // assume success
 }
 
-void LiquidCrystal::print(string& s) {
+void LiquidCrystal::print(string& s) { //Hiukan liian raskas vakiomerkkitulostukseen
 	for (string::size_type i = 0; i < s.size(); i++){ //ei set cursoria
 		write(s[i]);
 	}
 }
+void LiquidCrystal::print(char *s) {
+	for (char* i = s; *i; ++i) {
+		write(*i);
+	}
+}
+
 // lisää tähän vielä se toinen!!!!
 
 /************ low level data pushing commands **********/

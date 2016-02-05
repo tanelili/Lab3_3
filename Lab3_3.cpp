@@ -22,6 +22,8 @@
 #include <string.h>
 #include <iostream>
 
+using namespace std;
+
 #define TICKRATE_HZ1 (1000) // Ticks per seconds
 
 volatile int counter = 0;
@@ -29,12 +31,13 @@ volatile int h = 0;
 volatile int m = 0;
 volatile int s = 0;
 volatile int ms = 0;
+volatile bool flag = false;
 
 class Timer {
 
 public:
-	Timer(int min = 1, int sec = 0, int ms =0){
-		tickit = (sec * 100) + (min * 60 * 100) + (ms / 10);
+	Timer(int min = 0, int sec = 0, int ms =0){
+		tickit = (sec * 1000) + (min * 60 * 1000) + (ms / 100);
 		tickeja = 0;
 	};
 	virtual ~Timer();
@@ -77,19 +80,18 @@ void SysTick_Handler(void)
 		counter--;
 	}
 
-
-/*
 	// RTC
 	ms++;
-	//flag = true;
+
 
 	if ( h == 24) {
 		h = 0;
 	}
 
-	if ( ms == 100) {
+	if ( ms >= 1000) {
 		s++;
 		ms = 0;
+		flag = true;
 
 		if (s == 60) {
 			m++;
@@ -100,7 +102,7 @@ void SysTick_Handler(void)
 				m = 0;
 			}
 		}
-	}*/
+	}
 }
 
 #ifdef __cplusplus
@@ -131,6 +133,7 @@ int main(void) {
 
 	Timer aika(0, 30, 0);
 
+
 	Board_Init();
 	Chip_Clock_SetSysTickClockDiv(1);
 	uint32_t sysTickRate = Chip_Clock_GetSysTickClockRate();
@@ -139,9 +142,43 @@ int main(void) {
 	LiquidCrystal meth(8, 9, 10, 11, 12, 13);
 	meth.begin(16,2);
 	meth.setCursor(0,0);
-	string teksti = "Testi teksti 010"; //Hiukan liian raskas vakiomerkkitulostukseen
-	meth.print(teksti);
+	meth.print("RTC:");
 	while(8) {
+		if(flag == true){
+			flag = false;
+			//char buffer [30];
+			char str[10];
+			meth.setCursor(0,1);
+			if(s<10 && m<10 && h<10){
+				sprintf(str,"0%d.0%d.0%d",h,m,s);
+			}
+			else if(s<10 && m<10){
+				sprintf(str,"%d.%0d.%0d",h,m,s);
+					}
+			else if(m<10 && h<10){
+				sprintf(str,"0%d.0%d.%d",h,m,s);
+					}
+			else if(s<10 && h<10){
+					sprintf(str,"0%d.%d.0%d",h,m,s);
+					}
+			else if(s<10){
+				sprintf(str,"%d.%d.0%d",h,m,s);
+			}
+
+			else if(m<10){
+				sprintf(str,"%d.0%d.%d",h,m,s);
+			}
+
+			else if(h<10){
+				sprintf(str,"0%d.%d.%d",h,m,s);
+			}
+			else{
+				sprintf(str,"%d.%d.%d",h,m,s);
+			}
+
+			char* teksti = str;
+			meth.print(teksti);
+		}
 	}
 	return 0;
 }

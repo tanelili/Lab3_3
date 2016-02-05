@@ -67,7 +67,10 @@ public:
 
   void clear();
   void home();
-  void print(string& s);
+
+  void print(string& s); // Print määrittely
+  void print(char *s); // Print määrittely charilla
+
   void noDisplay();
   void display();
   void noBlink();
